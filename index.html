@@ -6,41 +6,20 @@
 <title>שליחת פקס - InterFAX</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
-
   body {
     font-family: 'Segoe UI', Arial, sans-serif;
     background: #f0f2f5;
     min-height: 100vh;
     display: flex;
-    align-items: flex-start;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
     padding: 2rem 1rem;
     direction: rtl;
   }
-
-  .app {
-    width: 100%;
-    max-width: 560px;
-  }
-
-  .header {
-    text-align: center;
-    margin-bottom: 1.5rem;
-  }
-
-  .header h1 {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #1a1a2e;
-    letter-spacing: -0.5px;
-  }
-
-  .header p {
-    font-size: 0.875rem;
-    color: #6b7280;
-    margin-top: 0.25rem;
-  }
-
+  .app { width: 100%; max-width: 560px; flex: 1; }
+  .header { text-align: center; margin-bottom: 1.5rem; }
+  .header h1 { font-size: 1.5rem; font-weight: 700; color: #1a1a2e; }
+  .header p { font-size: 0.875rem; color: #6b7280; margin-top: 0.25rem; }
   .card {
     background: #fff;
     border-radius: 16px;
@@ -48,232 +27,111 @@
     padding: 1.75rem;
     margin-bottom: 1rem;
   }
-
   .card-title {
-    font-size: 0.8rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: #9ca3af;
-    margin-bottom: 1.25rem;
+    font-size: 0.8rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: #9ca3af; margin-bottom: 1.25rem;
   }
-
-  .field {
-    margin-bottom: 1.1rem;
-  }
-
-  label {
-    display: block;
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: #374151;
-    margin-bottom: 0.4rem;
-  }
-
-  input[type="text"],
-  input[type="email"],
-  input[type="datetime-local"] {
-    width: 100%;
-    padding: 0.65rem 0.875rem;
-    border: 1.5px solid #e5e7eb;
-    border-radius: 10px;
-    font-size: 0.9rem;
-    color: #111827;
-    background: #f9fafb;
+  .field { margin-bottom: 1.1rem; }
+  label { display: block; font-size: 0.875rem; font-weight: 600; color: #374151; margin-bottom: 0.4rem; }
+  .input-wrap { position: relative; display: flex; align-items: center; }
+  .input-wrap input {
+    width: 100%; padding: 0.65rem 0.875rem;
+    border: 1.5px solid #e5e7eb; border-radius: 10px;
+    font-size: 0.9rem; color: #111827; background: #f9fafb;
     transition: border-color 0.15s, box-shadow 0.15s;
-    outline: none;
-    direction: ltr;
-    text-align: right;
+    outline: none; direction: ltr; text-align: right;
   }
-
-  input:focus {
+  .input-wrap input:focus {
     border-color: #4f46e5;
     box-shadow: 0 0 0 3px rgba(79,70,229,0.12);
     background: #fff;
   }
-
+  .suffix {
+    position: absolute; left: 0.875rem;
+    font-size: 0.85rem; color: #9ca3af;
+    pointer-events: none;
+  }
+  input[type="text"], input[type="datetime-local"] {
+    width: 100%; padding: 0.65rem 0.875rem;
+    border: 1.5px solid #e5e7eb; border-radius: 10px;
+    font-size: 0.9rem; color: #111827; background: #f9fafb;
+    transition: border-color 0.15s; outline: none;
+    direction: ltr; text-align: right;
+  }
+  input[type="text"]:focus, input[type="datetime-local"]:focus {
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 3px rgba(79,70,229,0.12);
+    background: #fff;
+  }
+  .hint { font-size: 0.78rem; color: #9ca3af; margin-top: 0.3rem; }
   .file-zone {
-    border: 2px dashed #d1d5db;
-    border-radius: 12px;
-    padding: 2rem 1rem;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.2s;
-    background: #f9fafb;
-    position: relative;
+    border: 2px dashed #d1d5db; border-radius: 12px;
+    padding: 2rem 1rem; text-align: center;
+    cursor: pointer; transition: all 0.2s;
+    background: #f9fafb; position: relative;
   }
-
-  .file-zone:hover, .file-zone.drag-over {
-    border-color: #4f46e5;
-    background: #eef2ff;
-  }
-
+  .file-zone:hover, .file-zone.drag-over { border-color: #4f46e5; background: #eef2ff; }
   .file-zone input[type="file"] {
-    position: absolute;
-    inset: 0;
-    opacity: 0;
-    cursor: pointer;
-    width: 100%;
-    height: 100%;
+    position: absolute; inset: 0; opacity: 0;
+    cursor: pointer; width: 100%; height: 100%;
   }
-
-  .file-icon {
-    font-size: 2rem;
-    margin-bottom: 0.5rem;
-  }
-
-  .file-zone p {
-    font-size: 0.875rem;
-    color: #6b7280;
-    margin: 0;
-  }
-
-  .file-zone .file-name {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: #4f46e5;
-    margin-top: 0.5rem;
-    word-break: break-all;
-  }
-
-  .schedule-toggle {
-    display: flex;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
-  }
-
+  .file-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+  .file-zone p { font-size: 0.875rem; color: #6b7280; margin: 0; }
+  .file-name { font-size: 0.875rem; font-weight: 600; color: #4f46e5; margin-top: 0.5rem; word-break: break-all; }
+  .schedule-toggle { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
   .toggle-btn {
-    flex: 1;
-    padding: 0.6rem;
-    border: 1.5px solid #e5e7eb;
-    border-radius: 10px;
-    font-size: 0.875rem;
-    font-weight: 600;
-    cursor: pointer;
-    background: #f9fafb;
-    color: #6b7280;
-    transition: all 0.15s;
+    flex: 1; padding: 0.6rem;
+    border: 1.5px solid #e5e7eb; border-radius: 10px;
+    font-size: 0.875rem; font-weight: 600;
+    cursor: pointer; background: #f9fafb;
+    color: #6b7280; transition: all 0.15s;
   }
-
-  .toggle-btn.active {
-    background: #4f46e5;
-    border-color: #4f46e5;
-    color: #fff;
-  }
-
-  .datetime-field {
-    display: none;
-  }
-
-  .datetime-field.show {
-    display: block;
-  }
-
+  .toggle-btn.active { background: #4f46e5; border-color: #4f46e5; color: #fff; }
+  .datetime-field { display: none; }
+  .datetime-field.show { display: block; }
   .send-btn {
-    width: 100%;
-    padding: 0.875rem;
-    background: #4f46e5;
-    color: #fff;
-    border: none;
-    border-radius: 12px;
-    font-size: 1rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.15s;
-    letter-spacing: 0.02em;
+    width: 100%; padding: 0.875rem;
+    background: #4f46e5; color: #fff;
+    border: none; border-radius: 12px;
+    font-size: 1rem; font-weight: 700;
+    cursor: pointer; transition: all 0.15s;
     margin-top: 0.5rem;
   }
-
-  .send-btn:hover:not(:disabled) {
-    background: #4338ca;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(79,70,229,0.3);
-  }
-
-  .send-btn:active:not(:disabled) {
-    transform: translateY(0);
-  }
-
-  .send-btn:disabled {
-    background: #c4c4cf;
-    cursor: not-allowed;
-  }
-
-  .send-btn .spinner {
-    display: none;
-    width: 18px;
-    height: 18px;
+  .send-btn:hover:not(:disabled) { background: #4338ca; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(79,70,229,0.3); }
+  .send-btn:disabled { background: #c4c4cf; cursor: not-allowed; }
+  .spinner {
+    display: none; width: 18px; height: 18px;
     border: 2px solid rgba(255,255,255,0.4);
-    border-top-color: #fff;
-    border-radius: 50%;
-    animation: spin 0.7s linear infinite;
-    margin: 0 auto;
+    border-top-color: #fff; border-radius: 50%;
+    animation: spin 0.7s linear infinite; margin: 0 auto;
   }
-
   @keyframes spin { to { transform: rotate(360deg); } }
-
   .toast {
-    display: none;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 1rem 1.25rem;
-    border-radius: 12px;
-    font-size: 0.9rem;
-    font-weight: 600;
-    margin-top: 1rem;
-    animation: slideIn 0.25s ease;
+    display: none; align-items: center; gap: 0.75rem;
+    padding: 1rem 1.25rem; border-radius: 12px;
+    font-size: 0.9rem; font-weight: 600;
+    margin-top: 1rem; animation: slideIn 0.25s ease;
   }
-
-  @keyframes slideIn {
-    from { opacity: 0; transform: translateY(-8px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .toast.success {
-    display: flex;
-    background: #ecfdf5;
-    color: #065f46;
-    border: 1.5px solid #a7f3d0;
-  }
-
-  .toast.error {
-    display: flex;
-    background: #fef2f2;
-    color: #991b1b;
-    border: 1.5px solid #fecaca;
-  }
-
+  @keyframes slideIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+  .toast.success { display: flex; background: #ecfdf5; color: #065f46; border: 1.5px solid #a7f3d0; }
+  .toast.error { display: flex; background: #fef2f2; color: #991b1b; border: 1.5px solid #fecaca; }
   .toast-icon { font-size: 1.25rem; flex-shrink: 0; }
-
-  .config-link {
-    text-align: center;
-    margin-top: 0.75rem;
-    font-size: 0.8rem;
-    color: #9ca3af;
-  }
-
-  .config-link a {
-    color: #6b7280;
-    text-decoration: none;
-    border-bottom: 1px dashed #d1d5db;
-  }
-
   .tag {
-    display: inline-block;
-    padding: 2px 8px;
-    border-radius: 6px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    background: #eef2ff;
-    color: #4f46e5;
-    margin-right: 0.4rem;
+    display: inline-block; padding: 2px 8px; border-radius: 6px;
+    font-size: 0.75rem; font-weight: 600;
+    background: #eef2ff; color: #4f46e5; margin-right: 0.4rem;
   }
-
-  .hint {
-    font-size: 0.78rem;
-    color: #9ca3af;
-    margin-top: 0.3rem;
+  .config-link { text-align: center; margin-top: 0.75rem; font-size: 0.8rem; color: #9ca3af; }
+  .config-link a { color: #6b7280; text-decoration: none; border-bottom: 1px dashed #d1d5db; }
+  footer {
+    width: 100%; max-width: 560px;
+    text-align: center; padding: 1.5rem;
+    margin-top: 1rem; font-size: 0.8rem;
+    color: #9ca3af; border-top: 1px solid #e5e7eb;
   }
+  footer strong { color: #4f46e5; }
+  footer a { color: #4f46e5; text-decoration: none; }
 </style>
 </head>
 <body>
@@ -296,13 +154,14 @@
 
   <div class="card">
     <p class="card-title">פרטי השליחה</p>
-
     <div class="field">
       <label for="faxNumber">מספר פקס</label>
-      <input type="text" id="faxNumber" placeholder="+97239876543" />
-      <p class="hint">כולל קידומת מדינה, לדוגמה: +972...</p>
+      <div class="input-wrap">
+        <input type="text" id="faxNumber" placeholder="0391234567" style="padding-left:5rem;" />
+        <span class="suffix">@fax.tc</span>
+      </div>
+      <p class="hint">הכניסי מספר פקס בלבד - הסיומת תתווסף אוטומטית</p>
     </div>
-
     <div class="field">
       <label for="csid">CSID <span class="tag">טקסט שיופיע במסמך</span></label>
       <input type="text" id="csid" placeholder="שם החברה שלך" maxlength="20"/>
@@ -336,10 +195,13 @@
     <span id="errorMsg">שגיאה בשליחה</span>
   </div>
 
-  <p class="config-link">
-    הגדרות חשבון נטענות מ-<a href="interfax-config.json" target="_blank">interfax-config.json</a>
-  </p>
+  <p class="config-link">הגדרות חשבון נטענות מ-<a href="interfax-config.json" target="_blank">interfax-config.json</a></p>
 </div>
+
+<footer>
+  אפיון, הקמה וניהול ע"י <strong>SI RO</strong> &nbsp;|&nbsp;
+  <a href="mailto:info@sirosystems.com">info@sirosystems.com</a>
+</footer>
 
 <script>
 let config = { username: '', password: '', replyAddress: '' };
@@ -351,7 +213,6 @@ async function loadConfig() {
     if (r.ok) config = await r.json();
   } catch(e) {}
 }
-
 loadConfig();
 
 const fileZone = document.getElementById('fileZone');
@@ -361,15 +222,13 @@ const fileName = document.getElementById('fileName');
 fileZone.addEventListener('dragover', e => { e.preventDefault(); fileZone.classList.add('drag-over'); });
 fileZone.addEventListener('dragleave', () => fileZone.classList.remove('drag-over'));
 fileZone.addEventListener('drop', e => {
-  e.preventDefault();
-  fileZone.classList.remove('drag-over');
+  e.preventDefault(); fileZone.classList.remove('drag-over');
   const file = e.dataTransfer.files[0];
   if (file && file.type === 'application/pdf') {
     pdfFile.files = e.dataTransfer.files;
     fileName.textContent = '📎 ' + file.name;
   }
 });
-
 pdfFile.addEventListener('change', () => {
   if (pdfFile.files[0]) fileName.textContent = '📎 ' + pdfFile.files[0].name;
 });
@@ -401,38 +260,34 @@ function setLoading(on) {
 }
 
 async function sendFax() {
-  const faxNumber = document.getElementById('faxNumber').value.trim();
+  const rawNumber = document.getElementById('faxNumber').value.trim().replace(/\D/g, '');
+  const faxEmail = rawNumber + '@fax.tc';
   const csid = document.getElementById('csid').value.trim();
   const file = pdfFile.files[0];
   const sendTime = document.getElementById('sendTime').value;
 
   if (!file) return showToast('error', 'יש לבחור קובץ PDF');
-  if (!faxNumber) return showToast('error', 'יש להזין מספר פקס');
-  if (!config.username || config.username === 'YOUR_INTERFAX_USERNAME') {
-    return showToast('error', 'יש להגדיר שם משתמש וסיסמה ב-interfax-config.json');
-  }
+  if (!rawNumber) return showToast('error', 'יש להזין מספר פקס');
+  if (!config.username || config.username === 'YOUR_INTERFAX_USERNAME')
+    return showToast('error', 'יש להגדיר פרטי חשבון ב-interfax-config.json');
 
   setLoading(true);
   document.getElementById('toastSuccess').style.display = 'none';
   document.getElementById('toastError').style.display = 'none';
 
   try {
-    let url = `https://rest.interfax.net/outbound/faxes?faxNumber=${encodeURIComponent(faxNumber)}`;
+    let url = `https://rest.interfax.net/outbound/faxes?faxNumber=${encodeURIComponent(faxEmail)}`;
     if (csid) url += `&csid=${encodeURIComponent(csid)}`;
     if (config.replyAddress) url += `&replyAddress=${encodeURIComponent(config.replyAddress)}`;
-    if (scheduleMode === 'scheduled' && sendTime) {
+    if (scheduleMode === 'scheduled' && sendTime)
       url += `&postponeTime=${encodeURIComponent(new Date(sendTime).toISOString())}`;
-    }
 
     const fileBuffer = await file.arrayBuffer();
     const credentials = btoa(`${config.username}:${config.password}`);
 
     const response = await fetch(url, {
       method: 'POST',
-      headers: {
-        'Authorization': `Basic ${credentials}`,
-        'Content-Type': 'application/pdf'
-      },
+      headers: { 'Authorization': `Basic ${credentials}`, 'Content-Type': 'application/pdf' },
       body: fileBuffer
     });
 
@@ -440,9 +295,8 @@ async function sendFax() {
       const location = response.headers.get('Location') || '';
       const faxId = location.split('/').pop();
       const scheduled = scheduleMode === 'scheduled' && sendTime
-        ? ` | מתוזמן ל: ${new Date(sendTime).toLocaleString('he-IL')}`
-        : '';
-      showToast('success', `הפקס נשלח בהצלחה! מזהה: ${faxId}${scheduled}`);
+        ? ` | מתוזמן ל: ${new Date(sendTime).toLocaleString('he-IL')}` : '';
+      showToast('success', `✅ הפקס נשלח ל-${faxEmail} | מזהה: ${faxId}${scheduled}`);
     } else {
       const text = await response.text().catch(() => '');
       showToast('error', `שגיאה ${response.status}: ${text || response.statusText}`);
@@ -454,8 +308,5 @@ async function sendFax() {
   }
 }
 </script>
-<footer style="text-align:center;padding:1.5rem;margin-top:2rem;font-size:0.8rem;color:#9ca3af;border-top:1px solid #f0f0f0;">
-  אפיון, הקמה וניהול ע"י <strong style="color:#4f46e5;">SI RO</strong> &nbsp;|&nbsp; <a href="mailto:info@sirosystems.com" style="color:#4f46e5;text-decoration:none;">info@sirosystems.com</a>
-</footer>
 </body>
 </html>
