@@ -234,7 +234,7 @@ function setLoading(on) {
 
 async function sendFax() {
   const rawNumber = document.getElementById('faxNumber').value.trim().replace(/\D/g, '');
-  const faxEmail = rawNumber + '@fax.tc';
+  const faxEmail = '+972' + rawNumber.replace(/^0/, '');
   const csid = document.getElementById('csid').value.trim();
   const file = pdfFile.files[0];
   const sendTime = document.getElementById('sendTime').value;
