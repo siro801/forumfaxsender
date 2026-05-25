@@ -152,7 +152,11 @@
         <p class="hint">עד 20 תווים</p>
       </div>
     </div>
-
+<div class="field">
+  <label for="replyEmail">מייל לאישור שליחה <span class="tag">אופציונלי</span></label>
+  <input type="text" id="replyEmail" placeholder="example@gmail.com" />
+  <p class="hint">אם ריק - האישור ישלח ל-a84597580@gmail.com</p>
+</div>
     <div class="card">
       <p class="card-title">תזמון שליחה</p>
       <div class="schedule-toggle">
@@ -255,8 +259,9 @@ async function sendFax() {
   try {
     let url = `https://rest.interfax.net/outbound/faxes?faxNumber=${encodeURIComponent(faxEmail)}`;
     if (csid) url += `&csid=${encodeURIComponent(csid)}`;
-    if (config.replyAddress) url += `&replyAddress=${encodeURIComponent(config.replyAddress)}`;
-    if (scheduleMode === 'scheduled' && sendTime)
+const replyEmail = document.getElementById('replyEmail').value.trim();
+const effectiveReply = replyEmail || config.replyAddress;
+if (effectiveReply) url += `&replyAddress=${encodeURIComponent(effectiveReply)}`;    if (scheduleMode === 'scheduled' && sendTime)
       url += `&postponeTime=${encodeURIComponent(new Date(sendTime).toISOString())}`;
 
     const fileBuffer = await file.arrayBuffer();
